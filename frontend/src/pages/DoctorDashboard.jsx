@@ -168,12 +168,12 @@ export default function DoctorDashboard({ activeRole, activeTab, setActiveTab })
       </div>
 
       {/* Tabs */}
-      <div className="flex gap-2 border-b border-slate-100 dark:border-slate-900 pb-3">
+      <div className="flex gap-2 border-b border-slate-100 dark:border-slate-900 pb-3 overflow-x-auto scrollbar-none flex-nowrap -mx-4 px-4 sm:mx-0 sm:px-0">
         {['patients', 'diagnosis', 'appointments', 'video', 'prescriptions'].map(tab => (
           <button
             key={tab}
             onClick={() => setActiveTab(tab)}
-            className={`px-4 py-2 rounded-xl text-xs font-bold capitalize transition-all ${
+            className={`px-4 py-2 rounded-xl text-xs font-bold capitalize transition-all whitespace-nowrap ${
               activeTab === tab 
                 ? 'bg-sky-500/10 text-sky-600 dark:bg-sky-500/20 dark:text-sky-400' 
                 : 'text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-900'

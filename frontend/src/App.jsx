@@ -13,6 +13,7 @@ export default function App() {
   const [activeRole, setActiveRole] = useState('Patient'); // Default role
   const [currentTab, setCurrentTab] = useState('symptoms');
   const [darkMode, setDarkMode] = useState(false);
+  const [sidebarOpen, setSidebarOpen] = useState(false);
 
   const defaultTabs = {
     'Patient': 'symptoms',
@@ -45,6 +46,7 @@ export default function App() {
       if (activeRole !== roleName) {
         setActiveRole(roleName);
       }
+      setSidebarOpen(false); // Close mobile sidebar on navigation
     }, [roleName]);
 
     return (
@@ -53,13 +55,17 @@ export default function App() {
           activeRole={activeRole} 
           setActiveRole={setActiveRole} 
           darkMode={darkMode} 
-          setDarkMode={setDarkMode} 
+          setDarkMode={setDarkMode}
+          sidebarOpen={sidebarOpen}
+          setSidebarOpen={setSidebarOpen}
         />
         <div className="flex flex-1 overflow-hidden">
           <Sidebar 
             activeRole={activeRole} 
             currentTab={currentTab} 
-            setCurrentTab={setCurrentTab} 
+            setCurrentTab={setCurrentTab}
+            isOpen={sidebarOpen}
+            onClose={() => setSidebarOpen(false)}
           />
           <main className="flex-1 overflow-y-auto bg-slate-50/40 dark:bg-slate-950/20">
             {React.cloneElement(children, { 

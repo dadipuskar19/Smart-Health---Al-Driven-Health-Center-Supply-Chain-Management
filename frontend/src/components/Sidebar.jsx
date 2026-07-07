@@ -1,11 +1,10 @@
-import React from 'react';
 import { 
   HeartPulse, MessageSquare, Calendar, FileText, Clock, Calculator, 
   Users, Stethoscope, Video, Package, ScanLine, ArrowLeftRight, 
-  BarChart3, Truck, ShoppingBag, Eye 
+  BarChart3, Truck, ShoppingBag, Eye, X 
 } from 'lucide-react';
 
-export default function Sidebar({ activeRole, currentTab, setCurrentTab }) {
+export default function Sidebar({ activeRole, currentTab, setCurrentTab, isOpen, onClose }) {
   // Sidebar items mapping based on role
   const menuItems = {
     'Patient': [
@@ -42,21 +41,49 @@ export default function Sidebar({ activeRole, currentTab, setCurrentTab }) {
   const items = menuItems[activeRole] || [];
 
   return (
-    <aside className="w-64 h-[calc(100vh-62px)] border-r border-slate-200/50 dark:border-slate-800/50 bg-white/70 dark:bg-slate-900/60 backdrop-blur-md p-4 flex flex-col gap-1.5 flex-shrink-0">
-      <div className="px-3 py-2 mb-4">
-        <p className="text-[10px] font-bold uppercase tracking-wider text-slate-400 dark:text-slate-500">Navigation</p>
-        <p className="text-sm font-semibold text-slate-700 dark:text-slate-300 mt-1 truncate">{activeRole} Dashboard</p>
-      </div>
+    <>
+      {/* Mobile Sidebar backdrop overlay */}
+      {isOpen && (
+        <div 
+          className="fixed inset-0 z-40 bg-slate-900/40 backdrop-blur-xs md:hidden"
+          onClick={onClose}
+        />
+      )}
+      
+      {/* Sidebar Container */}
+      <aside 
+        className={`fixed inset-y-0 left-0 z-50 w-64 border-r border-slate-200/50 dark:border-slate-800/50 bg-white dark:bg-slate-900 p-4 flex flex-col gap-1.5 transition-transform duration-300 transform md:static md:translate-x-0 md:h-[calc(100vh-62px)] md:bg-white/70 md:dark:bg-slate-900/60 md:backdrop-blur-md md:z-30 md:flex-shrink-0 ${
+          isOpen ? 'translate-x-0' : '-translate-x-full'
+        }`}
+      >
+        {/* Close Button on Mobile */}
+        <div className="flex md:hidden items-center justify-between pb-3 mb-2 border-b border-slate-100 dark:border-slate-800/60">
+          <span className="font-extrabold text-sm text-slate-700 dark:text-slate-300">Menu</span>
+          <button 
+            onClick={onClose} 
+            className="p-1 rounded-lg text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800"
+          >
+            <X className="w-5 h-5" />
+          </button>
+        </div>
 
-      <nav className="flex-1 space-y-1">
-        {items.map((item) => {
-          const Icon = item.icon;
-          const isActive = currentTab === item.id;
-          return (
-            <button
-              key={item.id}
-              onClick={() => setCurrentTab(item.id)}
-              className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-left text-sm transition-all duration-200 group relative ${
+        <div className="px-3 py-2 mb-4 hidden md:block">
+          <p className="text-[10px] font-bold uppercase tracking-wider text-slate-400 dark:text-slate-500">Navigation</p>
+          <p className="text-sm font-semibold text-slate-700 dark:text-slate-300 mt-1 truncate">{activeRole} Dashboard</p>
+        </div>
+
+        <nav className="flex-1 space-y-1">
+          {items.map((item) => {
+            const Icon = item.icon;
+            const isActive = currentTab === item.id;
+            return (
+              <button
+                key={item.id}
+                onClick={() => {
+                  setCurrentTab(item.id);
+                  if (onClose) onClose();
+                }}
+                className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-left text-sm transition-all duration-200 group relative ${
                 isActive 
                   ? 'bg-gradient-to-r from-sky-500 to-sky-600 text-white font-medium shadow-md shadow-sky-500/20'
                   : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50 dark:text-slate-400 dark:hover:text-slate-200 dark:hover:bg-slate-800/40'
@@ -79,6 +106,7 @@ export default function Sidebar({ activeRole, currentTab, setCurrentTab }) {
           <span className="font-semibold text-emerald-500">Connected</span>
         </div>
       </div>
-    </aside>
+      </aside>
+    </>
   );
 }

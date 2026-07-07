@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import { Sun, Moon, Bell, Shield, ChevronDown, Check, AlertTriangle, Info, CheckCircle2 } from 'lucide-react';
+import { Sun, Moon, Bell, Shield, ChevronDown, Check, AlertTriangle, Info, CheckCircle2, Menu } from 'lucide-react';
 import { fetchAPI } from '../utils/api';
 
-export default function Navbar({ activeRole, setActiveRole, darkMode, setDarkMode }) {
+export default function Navbar({ activeRole, setActiveRole, darkMode, setDarkMode, sidebarOpen, setSidebarOpen }) {
   const navigate = useNavigate();
   const [notifications, setNotifications] = useState([]);
   const [showNotifDropdown, setShowNotifDropdown] = useState(false);
@@ -59,15 +59,24 @@ export default function Navbar({ activeRole, setActiveRole, darkMode, setDarkMod
 
   return (
     <nav className="sticky top-0 z-40 glass w-full border-b border-slate-200/50 dark:border-slate-800/50 px-4 py-3 flex items-center justify-between">
-      {/* Branding */}
-      <Link to="/" className="flex items-center gap-2">
-        <div className="w-9 h-9 rounded-xl bg-gradient-to-tr from-sky-500 to-emerald-500 flex items-center justify-center text-white font-bold shadow-md shadow-sky-500/20">
-          SH
-        </div>
-        <span className="font-extrabold text-xl bg-gradient-to-r from-sky-600 to-emerald-600 bg-clip-text text-transparent dark:from-sky-400 dark:to-emerald-400">
-          Smart Health
-        </span>
-      </Link>
+      {/* Menu & Branding */}
+      <div className="flex items-center gap-2">
+        <button 
+          onClick={() => setSidebarOpen(!sidebarOpen)}
+          className="p-1.5 rounded-xl text-slate-500 hover:bg-slate-100 dark:text-slate-400 dark:hover:bg-slate-800 md:hidden transition-all"
+          title="Toggle Navigation Menu"
+        >
+          <Menu className="w-5.5 h-5.5" />
+        </button>
+        <Link to="/" className="flex items-center gap-2">
+          <div className="w-9 h-9 rounded-xl bg-gradient-to-tr from-sky-500 to-emerald-500 flex items-center justify-center text-white font-bold shadow-md shadow-sky-500/20">
+            SH
+          </div>
+          <span className="hidden sm:inline font-extrabold text-xl bg-gradient-to-r from-sky-600 to-emerald-600 bg-clip-text text-transparent dark:from-sky-400 dark:to-emerald-400">
+            Smart Health
+          </span>
+        </Link>
+      </div>
 
       <div className="flex items-center gap-4">
         {/* DEMO ROLE SWITCHER */}
